@@ -27,6 +27,7 @@ func (c *Cache) Get(key string) (string, bool) {
 
 func (c *Cache) Put(key, value string) {
 	c.data[key] = value
+	delete(c.expData, key)
 }
 
 func (c *Cache) Keys() []string {
