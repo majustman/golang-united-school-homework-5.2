@@ -30,10 +30,11 @@ func (c *Cache) Put(key, value string) {
 }
 
 func (c *Cache) Keys() []string {
+	tn := time.Now().Unix()
 	var res []string
 	for key := range c.data {
 		t, ok := c.expData[key]
-		if ok && t.Unix() <= time.Now().Unix() {
+		if ok && t.Unix() <= tn {
 			res = append(res, key)
 		}
 		if !ok {
