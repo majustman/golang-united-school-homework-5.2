@@ -1,6 +1,9 @@
 package cache
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Cache struct {
 	data    map[string]string
@@ -15,7 +18,7 @@ func NewCache() Cache {
 
 func (c *Cache) Get(key string) (string, bool) {
 	t, ok := c.expData[key]
-	if ok && t.Unix() <= time.Now().Unix() {
+	if ok && t.Before(time.Now()) {
 		return "", false
 	}
 	v, ok := c.data[key]
@@ -31,17 +34,17 @@ func (c *Cache) Put(key, value string) {
 }
 
 func (c *Cache) Keys() []string {
-	tn := time.Now().Unix()
 	var res []string
 	for key := range c.data {
 		t, ok := c.expData[key]
-		if ok && t.Unix() <= tn {
+		if ok && t.After(time.Now()) {
 			res = append(res, key)
 		}
 		if !ok {
 			res = append(res, key)
 		}
 	}
+	fmt.Println(res)
 	return res
 }
 
