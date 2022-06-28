@@ -36,6 +36,9 @@ func (c *Cache) Keys() []string {
 		if ok && t.Unix() < time.Now().Unix() {
 			res = append(res, key)
 		}
+		if !ok {
+			res = append(res, key)
+		}
 	}
 	return res
 }
