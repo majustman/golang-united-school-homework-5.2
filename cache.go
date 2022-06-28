@@ -15,7 +15,7 @@ func NewCache() Cache {
 
 func (c *Cache) Get(key string) (string, bool) {
 	t, ok := c.expData[key]
-	if ok && t.Unix() < time.Now().Unix() {
+	if ok && t.Unix() <= time.Now().Unix() {
 		return "", false
 	}
 	v, ok := c.data[key]
@@ -33,7 +33,7 @@ func (c *Cache) Keys() []string {
 	var res []string
 	for key := range c.data {
 		t, ok := c.expData[key]
-		if ok && t.Unix() < time.Now().Unix() {
+		if ok && t.Unix() <= time.Now().Unix() {
 			res = append(res, key)
 		}
 		if !ok {
